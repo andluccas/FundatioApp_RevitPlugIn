@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>Interface\Recursos\Imagens\Icone.ico</ApplicationIcon>
+		<AssemblyName>FundatioApp</AssemblyName>
+		<BaseOutputPath>C:\ProgramData\Autodesk\Revit\Addins\2025</BaseOutputPath>
+	</PropertyGroup>
+
+	<!--Recursos-->
+	<ItemGroup>
+	  <None Remove="Interface\Recursos\Imagens\Legenda.png" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Content Include="Interface\Recursos\Imagens\Icone.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Interface\Recursos\Fontes\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Interface\Recursos\Imagens\Legenda.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
+
+	<!--Referências a API-->
+	<ItemGroup>
+	  <Reference Include="RevitAPI">
+	    <HintPath>..\..\..\Program Files\Autodesk\Revit 2025\RevitAPI.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	  <Reference Include="RevitAPIUI">
+	    <HintPath>..\..\..\Program Files\Autodesk\Revit 2025\RevitAPIUI.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
+	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="xcopy &quot;$(TargetDir)FundatioApp.dll&quot; &quot;%25APPDATA%25\Autodesk\Revit\Addins\2025\&quot; /Y&#xD;&#xA;xcopy &quot;$(ProjectDir)FundatioApp.addin&quot; &quot;%25APPDATA%25\Autodesk\Revit\Addins\2025\&quot; /Y" />
+	</Target>
+
+
+</Project>

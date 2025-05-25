@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Command">
+		<Text>FundatioApp</Text>
+		<Description>Aplicativo para cálculo de blocos de fundação integrado ao Revit</Description>
+		<Assembly>FundatioApp.dll</Assembly>
+		<FullClassName>FundatioApp.Revit.RevitComando</FullClassName>
+		<ClientId>DEA5F6B6-E910-4463-A0B0-DBD6CA6F464E</ClientId>
+		<VendorId>LRA</VendorId>
+		<VendorDescription>LucasAndrade</VendorDescription>
+	</AddIn>
+</RevitAddIns>
