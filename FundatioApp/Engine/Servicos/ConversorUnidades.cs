@@ -18,7 +18,6 @@
             {
                 "m" => valor,
                 "cm" => valor / 100.0,
-                _ => throw new Exception("Unidade de comprimento inválida (use 'm' ou 'cm')")
             };
         }
 
@@ -35,7 +34,6 @@
             {
                 "tf" => valor * 9.80665, // 1 tf ≈ 9.80665 kN
                 "kn" => valor,
-                _ => throw new Exception("Unidade de força inválida (use 'tf' ou 'kN')")
             };
         }
 
@@ -52,7 +50,6 @@
             {
                 "tfm" => valor * 9.80665, // 1 tf·m ≈ 9.80665 kNm
                 "knm" => valor,
-                _ => throw new Exception("Unidade de momento inválida (use 'tfm' ou 'kNm')")
             };
         }
 
@@ -74,14 +71,26 @@
             };
         }
 
+        /// <summary>
+        /// Converte a unidade de comprimento interna do programa para a do usuário 
+        /// </summary>
+        /// <param name="valor">Valor do resultado</param>
+        /// <param name="unidade">Unidade selecinada pelo usuário</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static double ComprimentoUsuario(double valor, string unidade)
         {
             return unidade.ToLower() switch
             {
                 "m" => valor,
                 "cm" => valor * 100.0,
-                _ => throw new Exception("Unidade de comprimento inválida (use 'm' ou 'cm')")
             };
         }
     }
 }
+
+
+
+
+
+

@@ -362,13 +362,23 @@ namespace FundatioApp.Interface
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private readonly IntegracaoRevit _revitIntegration;
 
         //Botão Calcular
-        public ICommand CalcularCommand { get; }
+        public ICommand CalcularCommand { get; } // Comando para o botão "Calcular"
+        public ICommand LerDoModeloCommand { get; private set; } // Comando para o botão "Ler do Modelo"
 
         public ViewModel()
         {
-            CalcularCommand = new RelayCommand(Calcular);
+        }
+
+        public ViewModel(IntegracaoRevit integracao)
+        {
+            _revitIntegration = integracao ?? throw new ArgumentNullException(nameof(integracao));
+
+            LerDoModelo();
+
+            LerDoModeloCommand = new RelayCommand(LerDoModelo);
         }
 
         public class RelayCommand : ICommand
@@ -392,48 +402,27 @@ namespace FundatioApp.Interface
                 remove => CommandManager.RequerySuggested -= value;
             }
         }
-
-
         #endregion
 
         #region Integração Revit
-        private IntegracaoRevit _revitIntegration;
-        private bool _isRevitMode = false;
-
-        public bool IsRevitMode
-        {
-            get => _isRevitMode;
-            private set
-            {
-                _isRevitMode = value;
-                OnPropertyChanged();
-            }
-        }
-
-        // Comando para ler do modelo
-        public ICommand LerDoModeloCommand { get; private set; }
-
-        /// <summary>
-        /// Configura integração com Revit
-        /// </summary>
-        public void ConfigurarRevit(IntegracaoRevit integracao)
-        {
-            IsRevitMode = true;
-
-            // Inicializar comando Revit
-            LerDoModelo(integracao);
-        }
-
         /// <summary>
         /// Lê dados do modelo Revit
         /// </summary>
-        private void LerDoModelo(IntegracaoRevit integracao)
+        private void LerDoModelo()
         {
-            if (integracao == null) return;
+            // Verifica se a integração com o Revit foi inicializada
+            if (_revitIntegration == null)
+            {
+                MessageBox.Show("Dados não foram coletados.", "FundatioApp",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
+
+            // Tenta ler os dados do modelo Revit
             try
             {
-                var dadosLidos = integracao.LerDadosDoModelo();
+                var dadosLidos = _revitIntegration.LerDadosDoModelo();
 
                 if (dadosLidos.TemDados)
                 {
@@ -460,12 +449,13 @@ namespace FundatioApp.Interface
         /// </summary>
         private void AplicarDadosLidos(DadosRevit dadosLidos)
         {
-            Dx = dadosLidos.Dx;
-            Dy = dadosLidos.Dy;
-            AlturaBloco = dadosLidos.Hbloco;
-            DiametroEstaca = dadosLidos.DiametroEstaca;
-            LarguraPilar = dadosLidos.LarguraPilar;
-            AlturaPilar = dadosLidos.AlturaPilar;
+            // Verifica se dadosLidos.Dx é maior que zero e aplica o valor em Dx, o mesmo acontece para os demais
+            Dx = dadosLidos.Dx > 0 ? dadosLidos.Dx : Dx; 
+            Dy = dadosLidos.Dy > 0 ? dadosLidos.Dy : Dy;
+            AlturaBloco = dadosLidos.Hbloco > 0 ? dadosLidos.Hbloco : AlturaBloco;
+            DiametroEstaca = dadosLidos.DiametroEstaca > 0 ? dadosLidos.DiametroEstaca : DiametroEstaca;
+            LarguraPilar = dadosLidos.LarguraPilar > 0 ? dadosLidos.LarguraPilar : LarguraPilar;
+            AlturaPilar = dadosLidos.AlturaPilar > 0 ? dadosLidos.AlturaPilar : AlturaPilar;
         }
         #endregion
     }

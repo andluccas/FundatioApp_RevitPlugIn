@@ -1,8 +1,5 @@
 ﻿using Autodesk.Revit.DB;
-using Autodesk.Revit.DB.Structure;
 using Autodesk.Revit.UI;
-using System;
-using System.Linq;
 
 namespace FundatioApp.Revit
 {
@@ -13,6 +10,12 @@ namespace FundatioApp.Revit
         private readonly Document _doc;
         private readonly UIDocument _uiDoc;
 
+        /// <summary>
+        /// Construtor que identifica o documento aberto
+        /// </summary>
+        /// <param name="uiApp"></param>
+        /// <param name="uiDoc"></param>
+        /// <param name="doc"></param>
         public IntegracaoRevit(UIApplication uiApp, UIDocument uiDoc, Document doc)
         {
             _doc = doc;
@@ -28,18 +31,18 @@ namespace FundatioApp.Revit
 
             try
             {
-                var elementosSelecionados = _uiDoc.Selection.GetElementIds()
-                    .Select(id => _doc.GetElement(id))
-                    .Where(e => e != null)
-                    .ToList();
+                /// Armazena as IDs dos elementos selecionados
+                var elementosSelecionados = _uiDoc.Selection.GetElementIds().Select(id => _doc.GetElement(id)).Where(e => e != null).ToList();
 
+                // Se não houver elementos selecionados, retorna dados vazios
                 if (!elementosSelecionados.Any())
                     return dados;
 
-                // Processar pilares
+                // Identifica se há pilares selecionados
                 var pilar = elementosSelecionados.FirstOrDefault(e =>
                     e.Category?.Id.Value == (int)BuiltInCategory.OST_StructuralColumns);
 
+                // Se houver pilares, obtém suas dimensões através do método ObterParametro
                 if (pilar != null)
                 {
                     var tipoPilar = _doc.GetElement(pilar.GetTypeId());
@@ -48,10 +51,11 @@ namespace FundatioApp.Revit
                     dados.TemDados = true;
                 }
 
-                // Processar fundações
+                // Identifica se há fundações selecionadas
                 var fundacao = elementosSelecionados.FirstOrDefault(e =>
                     e.Category?.Id.Value == (int)BuiltInCategory.OST_StructuralFoundation);
 
+                //Se houver fundações, obtém suas dimensões e as de suas estacas
                 if (fundacao != null)
                 {
                     var tipoFundacao = _doc.GetElement(fundacao.GetTypeId());
@@ -59,30 +63,34 @@ namespace FundatioApp.Revit
                     dados.Dy = ObterParametro(tipoFundacao, "Dy");
                     dados.Hbloco = ObterParametro(tipoFundacao, "Foundation Thickness", "Height", "Thickness");
 
-
-                    // Processar estacas
+                    // Obtém as estacas associadas à fundação
                     var estacas = fundacao.GetDependentElements(null);
                     var estaca = estacas[1];
 
-
-                        var estacaX = _doc.GetElement(estaca);
-                        if (estacaX != null)
-                        {
-                            var tipoEstaca = _doc.GetElement(estacaX.GetTypeId());
-                            dados.DiametroEstaca = ObterParametro(tipoEstaca, "Diâmetro", "Diameter", "Width", "D");
-                        }
+                    // Se houver estacas, obtém o diâmetro da primeira estaca
+                    var estacaX = _doc.GetElement(estaca);
+                    if (estacaX != null)
+                    {
+                        var tipoEstaca = _doc.GetElement(estacaX.GetTypeId());
+                        dados.DiametroEstaca = ObterParametro(tipoEstaca, "Diâmetro", "Diameter", "Width", "D");
+                    }
                     dados.TemDados = true;
                 }
             }
             catch (Exception ex)
             {
+                // Em caso de erro, exibe mensagem de erro e retorna dados vazios
                 System.Diagnostics.Debug.WriteLine($"Erro ao ler dados do Revit: {ex.Message}");
             }
-
             return dados;
         }
 
-
+        /// <summary>
+        /// Obtém um parâmetro de um elemento Revit, convertendo seu valor para metros
+        /// </summary>
+        /// <param name="elemento">Elemento selecionado</param>
+        /// <param name="nomes">Parâmetro de retorno</param>
+        /// <returns></returns>
         private double ObterParametro(Element elemento, params string[] nomes)
         {
             foreach (var nome in nomes)
@@ -95,6 +103,9 @@ namespace FundatioApp.Revit
         }
     }
 
+    /// <summary>
+    /// Classe para armazenar os dados lidos do Revit
+    /// </summary>
     public class DadosRevit
     {
         public bool TemDados { get; set; } = false;
@@ -112,3 +123,9 @@ namespace FundatioApp.Revit
         public double DiametroEstaca { get; set; }
     }
 }
+
+
+
+
+
+

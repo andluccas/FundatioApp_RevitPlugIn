@@ -52,7 +52,6 @@ namespace FundatioApp.Engine.Calculos
             TensaoEstaca = ConversorUnidades.Tensao(ndMaxEstaca / (aampEstaca * senQuad), "kn/m2"); //MPa
             TensaoPilar = ConversorUnidades.Tensao(ndMaxEstaca * NumeroEstacas / (aampPilar * senQuad), "kn/m2"); //MPa
 
-
             // Definição das tensões limites
             double alfaV2 = 1 - fck / 250;
             LimiteEstaca = 0.72 * alfaV2 * fck / gammaC;
@@ -60,3 +59,10 @@ namespace FundatioApp.Engine.Calculos
         }
     }
 }
+
+
+
+
+
+
+

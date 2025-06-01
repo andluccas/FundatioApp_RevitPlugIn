@@ -241,7 +241,18 @@
                                             </StackPanel>
                                         </Grid>
                                     </GroupBox>
-                                    <Button Content="Calcular" Padding="5" Margin="50,10,50,0"  Background="DarkOrange" FontSize="14" Foreground="White" FontWeight="Bold" Command="{Binding CalcularCommand}" />
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Grid.Column="0" Content="Ler Dados" Padding="5" Margin="20,10,20,0"  Background="#FF2C3541" FontSize="14" Foreground="White" FontWeight="Bold" Command="{Binding LerDoModeloCommand}" />
+                                        <Button Grid.Column="1" Content="Calcular" Padding="5" Margin="20,10,20,0"  Background="DarkOrange" FontSize="14" Foreground="White" FontWeight="Bold" Command="{Binding CalcularCommand}" />
+                                        
+                                    </Grid>
+
                                 </StackPanel>
 
                                 <!-- Coluna 2 - Esforços e resultados-->
@@ -416,23 +427,17 @@
                                     <!-- Conteúdo da aba de informações -->
                                     <TextBlock Text="Versão: 0.0.0" FontSize="14" Margin="0,0,0,10"/>
                                     <TextBlock Text="Desenvolvido por Lucas Andrade" FontSize="14" Margin="0,0,0,10"/>
-                                    <TextBlock Text="Este software realiza cálculos para blocos estruturais de 4 estacas." 
-                                               TextWrapping="Wrap" Margin="0,0,0,10"/>
-                                    <TextBlock Text="O programa seguie as seguintes premissas:." 
-                                               TextWrapping="Wrap" Margin="0,0,0,10"/>
-                                    <TextBlock Text=" - O bloco deve ser rígido;" 
-                                               TextWrapping="Wrap" Margin="0,0,0,10"/>
-                                    <TextBlock Text=" - O bloco deve ser quadrado;" 
-                                               TextWrapping="Wrap" Margin="0,0,0,10"/>
-                                    <TextBlock Text=" - As estacas devem ser simpetricas com o centro de gravidade do bloco;" 
-                                               TextWrapping="Wrap" Margin="0,0,0,10"/>
-                                    <TextBlock Text=" - Em caso de haver tração na estaca, a situação deve ser verificada separadamente pelo usuário;" 
-                                               TextWrapping="Wrap" Margin="0,0,0,10"/>
-                                    <TextBlock Text=" - Não pode haver tração no pilar;" 
-                                               TextWrapping="Wrap" Margin="0,0,0,10"/>
-                                    <TextBlock Text="- O pilar deve ser retangular e não pode ser vazado." 
-                                               TextWrapping="Wrap" Margin="0,0,0,10"/>
-                                    <TextBlock Text="Este programa tem caráter educacional e não deve ser utilizado para fins profissionais." FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+                                    <TextBlock Text="Este software realiza cálculos para blocos estruturais de 4 estacas." TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <TextBlock Text="O programa seguie as seguintes premissas:." TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <TextBlock Text=" - O bloco deve ser rígido;" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <TextBlock Text=" - O bloco deve ser quadrado;" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <TextBlock Text=" - As estacas devem ser simpetricas com o centro de gravidade do bloco;" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <TextBlock Text=" - Em caso de haver tração na estaca, a situação deve ser verificada separadamente pelo usuário;" TextWrapping="Wrap" 
+                                               Margin="0,0,0,10"/>
+                                    <TextBlock Text=" - Não pode haver tração no pilar;" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <TextBlock Text="- O pilar deve ser retangular e não pode ser vazado." TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <TextBlock Text="Este programa tem caráter educacional e não deve ser utilizado para fins profissionais." FontWeight="Bold" FontSize="14" 
+                                               Margin="0,0,0,10"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1" Margin="20,10,0,0">
@@ -466,7 +471,8 @@
                         <StackPanel Grid.Column="1" Grid.Row="0" Margin="20,0,0,0">
                             <TextBlock Text="Legenda" FontSize="24" FontWeight="SemiBold" Margin="0,20,0,0"/>
                             <GroupBox  Padding="10" Margin="0,15,0,0" Background="White">
-                                <Image Source="pack://application:,,,/FundatioApp;component/Interface/Recursos/Imagens/Legenda.png" MaxWidth="285" Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                <Image Source="pack://application:,,,/FundatioApp;component/Interface/Recursos/Imagens/Legenda.png" MaxWidth="285" Stretch="Uniform" 
+                                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                             </GroupBox>
                         </StackPanel>
                     </Grid>
@@ -475,3 +481,9 @@
         </Grid>
     </Grid>
 </Window>
+
+    
+    
+    
+    
+    

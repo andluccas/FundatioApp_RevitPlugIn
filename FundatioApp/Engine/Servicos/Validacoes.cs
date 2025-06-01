@@ -32,7 +32,12 @@ namespace FundatioApp.Engine.Servicos
         public static void ValidarBlocoFlexivel(double theta)
         {
             if (theta < 45)
-                MessageBox.Show("Bloco flexível!", "Caso não abordado", MessageBoxButton.OK, MessageBoxImage.Warning);
+            {
+                if (theta < 33.7)
+                    MessageBox.Show("Bloco flexível!", "Caso não abordado", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                MessageBox.Show("Bloco semi-rígido!", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
             return;
         }
 
@@ -62,6 +67,7 @@ namespace FundatioApp.Engine.Servicos
         {
             return tensao <= limite;
         }
-
     }
 }
+
+
