@@ -19,12 +19,10 @@ namespace FundatioApp.Engine.Servicos
 
             // GEOMETRIA
             var geometria = new Geometria(entrada.Coordenadas, entrada.Z, entrada.LarguraPilar, entrada.AlturaPilar);
-            double comprimentoTirante = geometria.ComprimentoTirante;
 
             resultado.Z = entrada.Z;
             resultado.Theta = geometria.Theta;
             Validacoes.ValidarBlocoFlexivel(resultado.ObterThetaGraus());
-
 
             //REAÇÕES
             var reacoes = new Reacoes(esforcos, entrada.Coordenadas);
@@ -40,9 +38,8 @@ namespace FundatioApp.Engine.Servicos
             resultado.LimiteEstaca = tensoes.LimiteEstaca;
             resultado.LimitePilar = tensoes.LimitePilar;
 
-
             //ARMADURA NECESSÁRIA
-            var armadura = new Armaduras(reacoes.NdMaxEstaca, geometria.Theta, entrada.Fyd);
+            var armadura = new Armaduras(reacoes.NdMaxEstaca, geometria.Theta, entrada.Fyd, geometria.Alpha);
             resultado.Armaduras = armadura;
 
             return resultado;

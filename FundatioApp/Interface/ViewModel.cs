@@ -176,11 +176,18 @@ namespace FundatioApp.Interface
             set => AlterarValor(value, ref _limitePilar, false, "tensão limite na estaca", true, nameof(LimitePilar));
         }
 
-        private double _asTirante;
-        public double AsTirante
+        private double _asTiranteX;
+        public double AsTiranteX
         {
-            get => _asTirante;
-            set => AlterarValor(value, ref _asTirante, false, "armadura do tirante", false, nameof(AsTirante));
+            get => _asTiranteX;
+            set => AlterarValor(value, ref _asTiranteX, false, "armadura do tirante", false, nameof(AsTiranteX));
+        }
+
+        private double _asTiranteY;
+        public double AsTiranteY
+        {
+            get => _asTiranteY;
+            set => AlterarValor(value, ref _asTiranteY, false, "armadura do tirante", false, nameof(AsTiranteY));
         }
 
         private double _asDistribuicao;
@@ -343,7 +350,8 @@ namespace FundatioApp.Interface
             VerifTensaoPilar = Validacoes.ValidarTensaoPilar(TensaoPilar, LimitePilar);
 
             //Armaduras
-            AsTirante = resultados.Armaduras.AsTirante;
+            AsTiranteX = resultados.Armaduras.AsTiranteX;
+            AsTiranteY = resultados.Armaduras.AsTiranteY;
             AsDistribuicao = resultados.Armaduras.AsDistribuicao;
             AsTopo = resultados.Armaduras.AsTopo;
             AsVertical = resultados.Armaduras.AsVertical;
@@ -374,28 +382,51 @@ namespace FundatioApp.Interface
 
         public ViewModel(IntegracaoRevit integracao)
         {
-            _revitIntegration = integracao ?? throw new ArgumentNullException(nameof(integracao));
+            _revitIntegration = integracao;
 
-            LerDoModelo();
-
-            LerDoModeloCommand = new RelayCommand(LerDoModelo);
-        }
-
-        public class RelayCommand : ICommand
-        {
-            private readonly Action _executar;
-            private readonly Func<bool> _podeExecutar;
-
-            public RelayCommand(Action executar, Func<bool> podeExecutar = null)
+            // Verifica se a integração com o Revit foi inicializada
+            if (_revitIntegration == null)
             {
-                _executar = executar;
-                _podeExecutar = podeExecutar;
+                MessageBox.Show("Dados não foram coletados.", "FundatioApp",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            public bool CanExecute(object parameter) => _podeExecutar == null || _podeExecutar();
+            LerDoModelo(); // lê do modelo assim que o programa inicia
 
+            LerDoModeloCommand = new RelayCommand(LerDoModelo); 
+
+            CalcularCommand = new RelayCommand(Calcular);
+        }
+
+        /// <summary>
+        /// Representa um comando que pode ser executado sem exigir condições específicas.
+        /// </summary>
+        public class RelayCommand : ICommand
+        {
+            private readonly Action _executar; // Ação a ser executada quando o comando é chamado
+
+            /// <summary>
+            /// Inicializa uma nova instância da classe que executa a ação especificada.
+            /// </summary>
+            /// <param name="executar">Ação a ser executada quando o comando é chamado.</param>
+            public RelayCommand(Action executar)
+            {
+                _executar = executar;
+            }
+
+            /// <summary>
+            /// Determina se o comando pode ser executado.
+            /// </summary>
+            public bool CanExecute(object parameter) => true;
+
+            /// <summary>
+            /// Executa a lógica associada ao comando.
+            /// </summary>
             public void Execute(object parameter) => _executar();
 
+            /// <summary>
+            /// Ocorre quando o estado do comando muda, indicando que ele pode ou não ser executado.
+            /// </summary>
             public event EventHandler CanExecuteChanged
             {
                 add => CommandManager.RequerySuggested += value;
@@ -410,14 +441,6 @@ namespace FundatioApp.Interface
         /// </summary>
         private void LerDoModelo()
         {
-            // Verifica se a integração com o Revit foi inicializada
-            if (_revitIntegration == null)
-            {
-                MessageBox.Show("Dados não foram coletados.", "FundatioApp",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
 
             // Tenta ler os dados do modelo Revit
             try

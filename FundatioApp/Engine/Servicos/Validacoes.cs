@@ -34,9 +34,12 @@ namespace FundatioApp.Engine.Servicos
             if (theta < 45)
             {
                 if (theta < 33.7)
+                {
                     MessageBox.Show("Bloco flexível!", "Caso não abordado", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                MessageBox.Show("Bloco semi-rígido!", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                else
+                    MessageBox.Show("Bloco semi-rígido!", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             return;
         }

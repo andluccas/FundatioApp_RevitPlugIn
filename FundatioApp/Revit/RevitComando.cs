@@ -12,7 +12,7 @@ namespace FundatioApp.Revit
     /// <summary>
     /// Classe que implementa o comando externo do Revit para abrir a interface do FundatioApp
     /// </summary>
-    public class ComandoRevit : IExternalCommand
+    public class RevitComando : IExternalCommand
     {
 
         private static Window _mainWindow; // Janela principal da aplicação
@@ -42,10 +42,10 @@ namespace FundatioApp.Revit
                 }
 
                 // Chama a classe de integração com o Revit coletando os dados necessários
-                var revitIntegration = new IntegracaoRevit(uiApp, uiDoc, doc);
+                var revitIntegracao = new IntegracaoRevit(uiApp, uiDoc, doc);
 
                 // Cria uma instância do ViewModel passando a integração com o Revit
-                _viewModel = new ViewModel(revitIntegration);
+                _viewModel = new ViewModel(revitIntegracao);
 
                 // Cria a janela principal da aplicação e define o DataContext
                 _mainWindow = new MainWindow();

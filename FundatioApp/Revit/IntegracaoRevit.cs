@@ -82,6 +82,8 @@ namespace FundatioApp.Revit
                 // Em caso de erro, exibe mensagem de erro e retorna dados vazios
                 System.Diagnostics.Debug.WriteLine($"Erro ao ler dados do Revit: {ex.Message}");
             }
+
+
             return dados;
         }
 

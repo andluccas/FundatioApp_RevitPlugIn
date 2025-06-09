@@ -11,9 +11,14 @@
         public double Rsd { get; private set; }
 
         /// <summary>
-        /// Área de aço do tirante em (cm²)
+        /// Área de aço do tirante em X (cm²)
         /// </summary>
-        public double AsTirante { get; private set; }
+        public double AsTiranteX { get; private set; }
+
+        /// <summary>
+        /// Área de aço do tirante em Y (cm²)
+        /// </summary>
+        public double AsTiranteY { get; private set; }
 
         /// <summary>
         /// Área de aço da armadura positiva de distribuição (cm²/m)
@@ -41,17 +46,22 @@
         /// <param name="nDEstaca">Reação da Estaca (kN)</param>
         /// <param name="theta">Ângulo da biela em (RAD)</param>
         /// <param name="fyd">Tensão de escoamento de cálculo do aço (MPa)</param>
-        public Armaduras(double nDEstaca, double theta, double fyd)
+        public Armaduras(double nDEstaca, double theta, double fyd, double alpha)
         {
-            //Cálculo da tração no tirante
-            Rsd = nDEstaca / Math.Tan(theta);
+            Rsd = nDEstaca / Math.Tan(theta); //Cálculo da tração no tirante
 
             //Cálculo das armaduras necessárias
-            AsTirante = 10 * Rsd / fyd;
-            AsDistribuicao = Math.Max(AsTirante * 0.2, 1.5);
-            AsTopo = Math.Max(AsTirante * 0.1, 1.5);
+            AsTiranteX = (10 * Rsd / fyd) * Math.Sin(alpha);
+            AsTiranteY = (10 * Rsd / fyd) * Math.Cos(alpha);
+            double AsMax = Math.Max(AsTiranteX, AsTiranteY);
+            AsDistribuicao = Math.Max(AsMax * 0.2 * 2, 1.5);
+            AsTopo = Math.Max(AsMax * 0.1 * 2, 1.5);
             AsVertical = 1.5;
-            AsCostela = Math.Max(AsTirante * 0.125, 1.5);
+            AsCostela = Math.Max(AsMax * 0.125 * 2, 1.5);
         }
     }
 }
+
+
+
+
