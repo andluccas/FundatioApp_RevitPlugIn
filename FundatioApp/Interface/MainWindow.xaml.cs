@@ -11,7 +11,6 @@ namespace FundatioApp.Interface
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ViewModel();
         }
 
         private void MainContentTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)

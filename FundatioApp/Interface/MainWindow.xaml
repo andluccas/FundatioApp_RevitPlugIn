@@ -248,8 +248,8 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Button Grid.Column="0" Content="Ler Dados" Padding="5" Margin="20,10,20,0"  Background="#FF2C3541" FontSize="14" Foreground="White" FontWeight="Bold" Command="{Binding LerDoModeloCommand}" />
-                                        <Button Grid.Column="1" Content="Calcular" Padding="5" Margin="20,10,20,0"  Background="DarkOrange" FontSize="14" Foreground="White" FontWeight="Bold" Command="{Binding CalcularCommand}" />
+                                        <Button Grid.Column="0" Content="Ler Dados" Padding="5" Margin="20,10,20,0"  Background="#FF2C3541" FontSize="14" Foreground="White" FontWeight="Bold" Command="{Binding ComandoLerDoModelo}" />
+                                        <Button Grid.Column="1" Content="Calcular" Padding="5" Margin="20,10,20,0"  Background="DarkOrange" FontSize="14" Foreground="White" FontWeight="Bold" Command="{Binding ComandoCalcular}" />
                                         
                                     </Grid>
 
